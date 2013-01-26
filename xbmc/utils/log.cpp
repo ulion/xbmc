@@ -28,6 +28,8 @@
 #include "utils/StdString.h"
 #if defined(TARGET_ANDROID)
 #include "android/activity/XBMCApp.h"
+#elif defined(TARGET_DARWIN)
+#include "osx/NSLog.h"
 #elif defined(TARGET_WINDOWS)
 #include "win32/WIN32Util.h"
 #endif
@@ -97,6 +99,9 @@ void CLog::Log(int loglevel, const char *format, ... )
       fputs(strPrefix.c_str(), m_file);
       fputs(strData2.c_str(), m_file);
       OutputDebugString(strData2);
+#if defined(TARGET_DARWIN) && defined(_DEBUG)
+      NSLog2C(strPrefix.c_str(), strData2.c_str());
+#endif
       m_repeatCount = 0;
     }
     
@@ -126,6 +131,8 @@ void CLog::Log(int loglevel, const char *format, ... )
 //print to adb
 #if defined(TARGET_ANDROID) && defined(_DEBUG)
   CXBMCApp::android_printf("%s%s",strPrefix.c_str(), strData.c_str());
+#elif defined(TARGET_DARWIN) && defined(_DEBUG)
+    NSLog2C(strPrefix.c_str(), strData.c_str());
 #endif
 
     fputs(strPrefix.c_str(), m_file);

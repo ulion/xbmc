@@ -50,6 +50,7 @@
 		7CC3106F162AAFE3003E7579 /* EdenVideoArtUpdater.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CC3106D162AAFE3003E7579 /* EdenVideoArtUpdater.cpp */; };
 		7CCFD9991514950700211D82 /* PCMCodec.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CCFD9971514950700211D82 /* PCMCodec.cpp */; };
 		7CEE2E7F13D6B7D4000ABF2A /* TimeSmoother.cpp in Sources */ = {isa = PBXBuildFile; fileRef = 7CEE2E7D13D6B7D4000ABF2A /* TimeSmoother.cpp */; };
+		82B625FF16B3F3DE001DCAC3 /* NSLog.m in Sources */ = {isa = PBXBuildFile; fileRef = 82B625FE16B3F3DE001DCAC3 /* NSLog.m */; };
 		C80711AD135DB85F002F601B /* InputOperations.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C80711AB135DB85F002F601B /* InputOperations.cpp */; };
 		C8B929D01573557B00284190 /* Epg.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8B929C31573557B00284190 /* Epg.cpp */; };
 		C8B929D11573557B00284190 /* EpgContainer.cpp in Sources */ = {isa = PBXBuildFile; fileRef = C8B929C51573557B00284190 /* EpgContainer.cpp */; };
@@ -1125,6 +1126,8 @@
 		7CCFD9981514950700211D82 /* PCMCodec.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PCMCodec.h; sourceTree = "<group>"; };
 		7CEE2E7D13D6B7D4000ABF2A /* TimeSmoother.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = TimeSmoother.cpp; sourceTree = "<group>"; };
 		7CEE2E7E13D6B7D4000ABF2A /* TimeSmoother.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TimeSmoother.h; sourceTree = "<group>"; };
+		82B625FD16B3F3DE001DCAC3 /* NSLog.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = NSLog.h; sourceTree = "<group>"; };
+		82B625FE16B3F3DE001DCAC3 /* NSLog.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = NSLog.m; sourceTree = "<group>"; };
 		83D619BB13C0D25300418A0F /* README.ios */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = README.ios; sourceTree = "<group>"; };
 		8D576316048677EA00EA77CD /* XBMC.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = XBMC.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		C80711AB135DB85F002F601B /* InputOperations.cpp */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.cpp.cpp; path = InputOperations.cpp; sourceTree = "<group>"; };
@@ -5888,6 +5891,8 @@
 				DFFEFBED15160739001294DC /* IOSScreenManager.mm */,
 				F56C866B131F42EB000AD0F6 /* OSXGNUReplacements.c */,
 				F56C866C131F42EB000AD0F6 /* OSXGNUReplacements.h */,
+				82B625FD16B3F3DE001DCAC3 /* NSLog.h */,
+				82B625FE16B3F3DE001DCAC3 /* NSLog.m */,
 			);
 			path = osx;
 			sourceTree = "<group>";
@@ -7706,6 +7711,7 @@
 				DF64FE5616C07AF700D028FB /* GUIViewControl.cpp in Sources */,
 				DF64FE5716C07AF700D028FB /* GUIViewState.cpp in Sources */,
 				DF64FE5916C07AF700D028FB /* ViewDatabase.cpp in Sources */,
+				82B625FF16B3F3DE001DCAC3 /* NSLog.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
