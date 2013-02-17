@@ -33,6 +33,7 @@
 #include "IMsgTargetCallback.h"
 #include "DirtyRegionTracker.h"
 #include "utils/GlobalsHandling.h"
+#include <list>
 
 class CGUIDialog;
 
@@ -164,7 +165,14 @@ private:
   std::stack<int> m_windowHistory;
 
   IWindowManagerCallback* m_pCallback;
-  std::vector < std::pair<CGUIMessage*,int> > m_vecThreadMessages;
+  struct GUIThreadMessage_t
+  {
+    unsigned int iMsgSeq;
+    CGUIMessage *pMsg;
+    int window;
+  };
+  unsigned int m_threadMessageSequence;
+  std::list <struct GUIThreadMessage_t> m_vecThreadMessages;
   CCriticalSection m_critSection;
   std::vector <IMsgTargetCallback*> m_vecMsgTargets;
 

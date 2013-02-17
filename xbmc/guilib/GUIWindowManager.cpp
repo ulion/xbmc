@@ -43,6 +43,7 @@ CGUIWindowManager::CGUIWindowManager(void)
   m_bShowOverlay = true;
   m_iNested = 0;
   m_initialized = false;
+  m_threadMessageSequence = 0;
 }
 
 CGUIWindowManager::~CGUIWindowManager(void)
@@ -775,26 +776,46 @@ int CGUIWindowManager::GetTopMostModalDialogID(bool ignoreClosing /*= false*/) c
 void CGUIWindowManager::SendThreadMessage(CGUIMessage& message, int window /*= 0*/)
 {
   CSingleLock lock(m_critSection);
-
-  CGUIMessage* msg = new CGUIMessage(message);
-  m_vecThreadMessages.push_back( pair<CGUIMessage*,int>(msg,window) );
+  struct GUIThreadMessage_t tmsg = { ++m_threadMessageSequence, new CGUIMessage(message), window };
+  m_vecThreadMessages.push_back(tmsg);
 }
 
 void CGUIWindowManager::DispatchThreadMessages()
 {
-  CSingleLock lock(m_critSection);
-  vector< pair<CGUIMessage*,int> > messages(m_vecThreadMessages);
-  m_vecThreadMessages.erase(m_vecThreadMessages.begin(), m_vecThreadMessages.end());
-  lock.Leave();
+  // This method only be called in the xbmc main thread.
 
-  while ( messages.size() > 0 )
+  // XXX: for more info of this method
+  //      check the pr here: https://github.com/xbmc/xbmc/pull/2253
+
+  // As a thread message queue service, it should follow these rules:
+  // 1. Must Thread safe, message can be pushed into queue in arbitrary thread context.
+  // 2. Messages must be processed in dispatch message thread context with the same
+  //    order as they be pushed into the queue.
+  // 3. Dispatch function must support call itself during message process procedure,
+  //    and do not break other rules listed here. to make it clear: in the
+  //    SendMessage(), it could start another xbmc main thread loop, calling
+  //    DispatchThreadMessages() in it's internal loop, this must be supported.
+  // 4. Message should be processed in next dispatch message call after
+  //    it be pushed into the queue, then no deadlock.
+  // 5. If possible, queued messages can be removed by certain filter condition
+  //    and not break above.
+
+  unsigned int lastMsgSeq = m_threadMessageSequence;
+  for (;;)
   {
-    vector< pair<CGUIMessage*,int> >::iterator it = messages.begin();
-    CGUIMessage* pMsg = it->first;
-    int window = it->second;
-    // first remove the message from the queue,
-    // else the message could be processed more then once
-    it = messages.erase(it);
+    // pop up one message per time to make messages be processed by order, since
+    // in SendMessage() it may start deeper message loop then call back to here.
+    // this will ensure rule No.2 & No.3
+    CSingleLock lock(m_critSection);
+
+    if (m_vecThreadMessages.empty() || (int)(lastMsgSeq - m_vecThreadMessages.front().iMsgSeq) < 0)
+      return;
+
+    CGUIMessage *pMsg = m_vecThreadMessages.front().pMsg;
+    int window = m_vecThreadMessages.front().window;
+    m_vecThreadMessages.pop_front();
+
+    lock.Leave();
 
     if (window)
       SendMessage( *pMsg, window );
