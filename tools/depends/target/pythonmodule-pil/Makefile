@@ -29,7 +29,11 @@ $(PLATFORM): $(TARBALLS_LOCATION)/$(ARCHIVE) $(DEPS)
 
 $(LIBDYLIB): $(PLATFORM)
 	mkdir -p $(PLATFORM)/output
+ifeq (darwin, $(findstring darwin, $(HOST)))
+	cd $(PLATFORM); $(CROSSFLAGS) $(NATIVEPREFIX)/bin/python setup.py build -x bdist_egg --plat-name $(OS)-$(CPU)
+else
 	cd $(PLATFORM); $(CROSSFLAGS) $(NATIVEPREFIX)/bin/python setup.py build -x bdist_egg --plat-name $(OS)-$(CPU) --exclude-source-files
+endif
 
 .installed-$(PLATFORM): $(LIBDYLIB)
 	mkdir -p $(PREFIX)/lib/python2.6/site-packages
