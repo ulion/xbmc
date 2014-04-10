@@ -947,6 +947,10 @@ bool CCurlFile::Open(const CURL& url)
       m_multisession = false;
     }
   }
+  else if (url2.GetProtocol().Equals("ftp") || url2.GetProtocol().Equals("ftps") )
+  {
+    m_multisession = true;
+  }
 
   if(StringUtils::EqualsNoCase(m_state->m_httpheader.GetValue("Transfer-Encoding"), "chunked"))
     m_state->m_fileSize = 0;
